@@ -1,0 +1,3 @@
+project: <YOU PROJECT ID>
+requirements_file: ./requirements.txt
+image: true
