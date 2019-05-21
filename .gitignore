@@ -1,0 +1,6 @@
+.idea*
+venv*
+.releases
+**__pycache__
+out.json
+geckodriver.log
