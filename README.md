@@ -1,12 +1,12 @@
-## Scrapy Cloud & Selenium integration using Custom Image
+## Scrapy Cloud + Selenium + crawlera-headless-proxy integration using Custom Image
 
-Sample Scrapy project demonstrating integration with Selenium using Firefox and its geckodriver.
+Sample Scrapy project demonstrating integration with Selenium using Firefox and its geckodriver, in addition to crawlera-headless-proxy.
 This project is ready to deploy to Scrapy Cloud using a custom Docker image.
 
 Based on [this KB](https://support.scrapinghub.com/support/solutions/articles/22000240310-deploying-custom-docker-image-with-selenium-on-scrapy-cloud)
 
 
-### Usage
+### Deploying on Scrapy Cloud
 
 Install [shub](https://shub.readthedocs.io/en/stable/index.html)
 
@@ -45,4 +45,50 @@ You can check deploy results later with 'shub image check --id 1'.
 Progress: 100%|█████████████| 100/100
 Deploy results:
 {'status': 'ok', 'project': <YOU PROJECT ID>, 'version': '1.0', 'spiders': 1}
+``` 
+
+Run the job on Scrapy Cloud passing in your Crawlera API Key using either an enviroment variable or an spider argument
+
+```bash
+$ shub schedule -e CRAWLERA_APIKEY=<API KEY> <YOUR PROJECT ID>/demo
+
+Watch the log on the command line:
+    shub log -f <YOU PROJECT ID>/1/1
+or print items as they are being scraped:
+    shub items -f <YOU PROJECT ID>/1/11
+or watch it running in Scrapinghub's web interface:
+    https://app.scrapinghub.com/p/<YOU PROJECT ID>/1/1
+```
+
+
+### Running Locally
+
+Create a virtualenv
+
+```bash
+$ virtualenv venv && source ./venv/bin/activate
+```
+
+Install scrapy and the project requirements
+```bash
+(venv) $ pip install scrapy==1.3.3
+...
+
+(venv) $ pip install -r requirements.txt
+...
+```
+
+Follow installation instructions for [crawlera-headless-proxy](https://github.com/scrapinghub/crawlera-headless-proxy#installation) on your platform
+
+Run crawlera-headless-proxy on a dedicated terminal/shell.
+It needs to be running for our demo spider to connect to it.
+(Hit *ctrl+c* to kill it and release the terminal)
+```bash
+$ crawlera-headless-proxy -d -a <CRAWLERA API KEY>
+```
+
+Run the project
+
+```bash
+$ scrapy crawl demo -o out.json
 ``` 

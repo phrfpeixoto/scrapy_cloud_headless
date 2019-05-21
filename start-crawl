@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Try to get the API from job's environment variables
+if [ -z "$CRAWLERA_APIKEY" ]; then
+  CRAWLERA_APIKEY=`echo $SHUB_JOB_ENV | jq .CRAWLERA_APIKEY | tr -d \"`
+fi
+
+# Try to get the API from the spider's arguments
+if [ -z "$CRAWLERA_APIKEY" ]; then
+  CRAWLERA_APIKEY=`echo $SHUB_JOB_DATA | jq .spider_args.CRAWLERA_APIKEY | tr -d \"`
+fi
+
+#Check if we do have an API Key to work with
+if [ -z "$CRAWLERA_APIKEY" ]; then
+  echo "CRAWLERA_APIKEY environment variable not defined. Aborting";
+  exit 1;
+fi
+
+crawlera-headless-proxy -v -a $CRAWLERA_APIKEY &
+echo "Started Crawlera headless proxy using API Key $CRAWLERA_APIKEY"
+
+# Run regular start-crawl
+/usr/bin/env python -m sh_scrapy.crawl
+
+# Kill crawlera-headless-proxy so the job can finish.
+pkill -f crawlera-headless-proxy;
+
+exit 0;

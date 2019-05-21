@@ -14,6 +14,8 @@ BOT_NAME = 'scrapy_selenium'
 SPIDER_MODULES = ['scrapy_selenium.spiders']
 NEWSPIDER_MODULE = 'scrapy_selenium.spiders'
 
+CRAWLERA_HEADLESS_PROXY = "127.0.0.1"
+CRAWLERA_HEADLESS_PORT = 3128
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scrapy_selenium (+http://www.yourdomain.com)'
@@ -22,7 +24,7 @@ NEWSPIDER_MODULE = 'scrapy_selenium.spiders'
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -70,7 +72,7 @@ ROBOTSTXT_OBEY = True
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_ENABLED = False
 # The initial download delay
 #AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
