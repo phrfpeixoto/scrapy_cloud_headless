@@ -71,9 +71,6 @@ $ virtualenv venv && source ./venv/bin/activate
 
 Install scrapy and the project requirements
 ```bash
-(venv) $ pip install scrapy==1.3.3
-...
-
 (venv) $ pip install -r requirements.txt
 ...
 ```
@@ -85,10 +82,12 @@ It needs to be running for our demo spider to connect to it.
 (Hit *ctrl+c* to kill it and release the terminal)
 ```bash
 $ crawlera-headless-proxy -d -a <CRAWLERA API KEY>
+# OR
+docker run -p 3128:3128 scrapinghub/crawlera-headless-proxy -d -a $CRAWLERA_API_KEY
 ```
 
 Run the project
 
 ```bash
-$ scrapy crawl demo -o out.json
+$ ./venv/bin/scrapy crawl demo -o out.json
 ``` 
