@@ -83,7 +83,7 @@ It needs to be running for our demo spider to connect to it.
 ```bash
 $ crawlera-headless-proxy -d -a <CRAWLERA API KEY>
 # OR
-docker run -p 3128:3128 scrapinghub/crawlera-headless-proxy -d -a $CRAWLERA_API_KEY
+$ docker run -p 3128:3128 scrapinghub/crawlera-headless-proxy -d -a $CRAWLERA_API_KEY
 ```
 
 Run the project
