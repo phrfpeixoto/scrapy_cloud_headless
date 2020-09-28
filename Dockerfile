@@ -7,7 +7,7 @@ RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://ar
 # Firefox and geckodriver
 #============================================
 RUN apt-get update                             \
- && apt-get install -y --no-install-recommends \
+ && apt-get install -y --force-yes --no-install-recommends \
     ca-certificates curl firefox-esr           \
  && rm -fr /var/lib/apt/lists/*                \
  && curl -L https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz | tar xz -C /usr/local/bin
