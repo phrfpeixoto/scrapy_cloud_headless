@@ -23,6 +23,8 @@ class DemoSpider(scrapy.Spider):
         options = webdriver.FirefoxOptions()
         options.add_argument("--window-size 1920,1080")
         options.add_argument("--headless")
+        # Required to run the browser inside the docker (as root)
+        options.add_argument("--no-sandbox")
         self.driver = webdriver.Firefox(options=options, firefox_profile=profile)
 
     def parse(self, response):
