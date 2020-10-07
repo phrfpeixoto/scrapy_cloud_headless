@@ -1,5 +1,6 @@
 .idea*
 venv*
+.venv*
 .releases
 **__pycache__
 out.json
