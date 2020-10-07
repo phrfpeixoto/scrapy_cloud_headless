@@ -1,7 +1,10 @@
-## Scrapy Cloud + Selenium + crawlera-headless-proxy integration using Custom Image
+## Integrating Scrapy Cloud + crawlera-headless-proxy 
 
-Sample Scrapy project demonstrating integration with Selenium using Firefox and its geckodriver, in addition to crawlera-headless-proxy.
-This project is ready to deploy to Scrapy Cloud using a custom Docker image.
+Sample Scrapy project demonstrating integration of Crawlera-Headless-Proxy with Scrapy Cloud through a custom Docker image.
+To demonstrate it, we use a Selenium + Firefox through its geckodriver.
+
+Please do not assume this is the best way to integrate selenium within your spider. The goal here is showcase
+the deployment of crawlera-headless-proxy
 
 Based on [this KB](https://support.scrapinghub.com/support/solutions/articles/22000240310-deploying-custom-docker-image-with-selenium-on-scrapy-cloud)
 
@@ -66,12 +69,12 @@ or watch it running in Scrapinghub's web interface:
 Create a virtualenv
 
 ```bash
-$ virtualenv venv && source ./venv/bin/activate
+$ virtualenv .venv && source ./.venv/bin/activate
 ```
 
 Install scrapy and the project requirements
 ```bash
-(venv) $ pip install -r requirements.txt
+(.venv) $ pip install -r requirements.txt
 ...
 ```
 
@@ -83,7 +86,7 @@ It needs to be running for our demo spider to connect to it.
 ```bash
 $ crawlera-headless-proxy -d -a <CRAWLERA API KEY>
 # OR
-$ docker run -p 3128:3128 scrapinghub/crawlera-headless-proxy -d -a $CRAWLERA_API_KEY
+$ docker run -p 3128:3128 scrapinghub/crawlera-headless-proxy -d -a <CRAWLERA API KEY>
 ```
 
 Run the project
