@@ -7,7 +7,7 @@ from scrapy_selenium.settings import CRAWLERA_HEADLESS_PROXY, CRAWLERA_HEADLESS_
 
 class DemoSpider(scrapy.Spider):
     name = 'demo'
-    start_urls = ['http://quotes.toscrape.com/js']
+    start_urls = ['https://quotes.toscrape.com/js']
 
     def __init__(self, *args, **kwargs):
         super(DemoSpider, self).__init__(*args, **kwargs)
@@ -18,6 +18,7 @@ class DemoSpider(scrapy.Spider):
         profile.set_preference("network.proxy.http_port", CRAWLERA_HEADLESS_PORT)
         profile.set_preference("network.proxy.ssl", CRAWLERA_HEADLESS_PROXY)
         profile.set_preference("network.proxy.ssl_port", CRAWLERA_HEADLESS_PORT)
+        profile.accept_untrusted_certs = True
 
         options = webdriver.FirefoxOptions()
         options.add_argument("--window-size 1920,1080")
