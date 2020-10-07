@@ -1,18 +1,27 @@
 #!/usr/bin/env bash
-
-# Try to get the API from job's environment variables
-if [ -z "$CRAWLERA_APIKEY" ]; then
-  CRAWLERA_APIKEY=`echo $SHUB_JOB_ENV | jq .CRAWLERA_APIKEY | grep -v null | tr -d \"`
-fi
-
 # Try to get the API from the spider's arguments
-if [ -z "$CRAWLERA_APIKEY" ]; then
+if [[ -z "$CRAWLERA_APIKEY" ]]; then
   CRAWLERA_APIKEY=`echo $SHUB_JOB_DATA | jq .spider_args.CRAWLERA_APIKEY | grep -v null | tr -d \"`
 fi
 
+# Try to get the API Key the custom job settings
+if [[ -z "$CRAWLERA_APIKEY" ]]; then
+  CRAWLERA_APIKEY=`echo $SHUB_SETTINGS | jq .job_settings.CRAWLERA_APIKEY | grep -v null | tr -d \"`
+fi
+
+# Try to get the API Key the global spider settings
+if [[ -z "$CRAWLERA_APIKEY" ]]; then
+  CRAWLERA_APIKEY=`echo $SHUB_SETTINGS | jq .spider_settings.CRAWLERA_APIKEY | grep -v null | tr -d \"`
+fi
+
+# Try to get the API Key the global project settings
+if [[ -z "$CRAWLERA_APIKEY" ]]; then
+  CRAWLERA_APIKEY=`echo $SHUB_SETTINGS | jq .project_settings.CRAWLERA_APIKEY | grep -v null | tr -d \"`
+fi
+
 #Check if we do have an API Key to work with
-if [ -z "$CRAWLERA_APIKEY" ]; then
-  echo "CRAWLERA_APIKEY environment variable not defined. Aborting";
+if [[ -z "$CRAWLERA_APIKEY" ]]; then
+  echo "FATAL ERROR: CRAWLERA_APIKEY setting not defined. Aborting";
   exit 1;
 fi
 
