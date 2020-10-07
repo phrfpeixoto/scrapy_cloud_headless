@@ -17,7 +17,7 @@ if [ -z "$CRAWLERA_APIKEY" ]; then
 fi
 
 crawlera-headless-proxy -v -a $CRAWLERA_APIKEY &
-echo "Started Crawlera headless proxy using API Key $CRAWLERA_APIKEY"
+echo "Started Crawlera headless proxy using API Key `echo $CRAWLERA_APIKEY | cut -c 1-5`..."
 
 # Run regular start-crawl
 /usr/bin/env python -m sh_scrapy.crawl
