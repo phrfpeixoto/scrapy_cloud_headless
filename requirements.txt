@@ -1,2 +1,2 @@
+scrapy==2.3
 selenium
-scrapy
