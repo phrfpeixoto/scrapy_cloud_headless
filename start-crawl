@@ -1,23 +1,33 @@
 #!/usr/bin/env bash
 # Try to get the API from the spider's arguments
-if [[ -z "$CRAWLERA_APIKEY" ]]; then
-  CRAWLERA_APIKEY=`echo $SHUB_JOB_DATA | jq .spider_args.CRAWLERA_APIKEY | grep -v null | tr -d \"`
-fi
+read_config(){
+  CONFIG_NAME=$1
 
-# Try to get the API Key the custom job settings
-if [[ -z "$CRAWLERA_APIKEY" ]]; then
-  CRAWLERA_APIKEY=`echo $SHUB_SETTINGS | jq .job_settings.CRAWLERA_APIKEY | grep -v null | tr -d \"`
-fi
+  if [[ -z "${!CONFIG_NAME}" ]]; then
+    VALUE=`echo $SHUB_JOB_DATA | jq ".spider_args.$CONFIG_NAME" | grep -v null | tr -d \"`
+  fi
 
-# Try to get the API Key the global spider settings
-if [[ -z "$CRAWLERA_APIKEY" ]]; then
-  CRAWLERA_APIKEY=`echo $SHUB_SETTINGS | jq .spider_settings.CRAWLERA_APIKEY | grep -v null | tr -d \"`
-fi
+  # Try to get the API Key the custom job settings
+  if [[ -z "${!CONFIG_NAME}" ]]; then
+    VALUE=`echo $SHUB_SETTINGS | jq ".job_settings.$CONFIG_NAME" | grep -v null | tr -d \"`
+  fi
 
-# Try to get the API Key the global project settings
-if [[ -z "$CRAWLERA_APIKEY" ]]; then
-  CRAWLERA_APIKEY=`echo $SHUB_SETTINGS | jq .project_settings.CRAWLERA_APIKEY | grep -v null | tr -d \"`
-fi
+  # Try to get the API Key the global spider settings
+  if [[ -z "${!CONFIG_NAME}" ]]; then
+    VALUE=`echo $SHUB_SETTINGS | jq ".spider_settings.$CONFIG_NAME" | grep -v null | tr -d \"`
+  fi
+
+  # Try to get the API Key the global project settings
+  if [[ -z "${!CONFIG_NAME}" ]]; then
+    VALUE=`echo $SHUB_SETTINGS | jq ".project_settings.$CONFIG_NAME" | grep -v null | tr -d \"`
+  fi
+
+  eval $CONFIG_NAME="'$VALUE'";
+}
+
+CRAWLERA_HEADLESS_PROXY_OPTIONS=""
+read_config 'CRAWLERA_APIKEY'
+read_config 'CRAWLERA_HEADLESS_PROXY_OPTIONS'
 
 #Check if we do have an API Key to work with
 if [[ -z "$CRAWLERA_APIKEY" ]]; then
@@ -25,8 +35,8 @@ if [[ -z "$CRAWLERA_APIKEY" ]]; then
   exit 1;
 fi
 
-crawlera-headless-proxy -v -a $CRAWLERA_APIKEY &
-echo "Started Crawlera headless proxy using API Key `echo $CRAWLERA_APIKEY | cut -c 1-5`..."
+crawlera-headless-proxy -a $CRAWLERA_APIKEY $CRAWLERA_HEADLESS_PROXY_OPTIONS &
+echo "Started Crawlera headless proxy using \"$CRAWLERA_HEADLESS_PROXY_OPTIONS\" options, and API Key `echo $CRAWLERA_APIKEY | cut -c 1-5`..."
 
 # Run regular start-crawl
 /usr/bin/env python -m sh_scrapy.crawl
